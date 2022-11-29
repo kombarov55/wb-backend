@@ -29,8 +29,10 @@ class ArticleSelectType:
 
 class ActionType:
     add_question = "Задать вопрос"
-    look_at_article = "Посмотреть на артикул"
+    add_comparison_question = "Задать вопрос со сравнением"
+    look_at_article = "Просмотр"
     set_like_to_comment = "Проставить лайк к комменту"
+    set_dislike_to_comment = "Проставить дизлайк к комменту"
 
 
 class TaskRequestStatus:
