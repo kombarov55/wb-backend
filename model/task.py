@@ -7,7 +7,7 @@ class TaskVO(database.base):
     __tablename__ = "task"
 
     id = Column(Integer, primary_key=True, index=True)
-    task_request_entry_id = Column(Integer)
+    task_request_id = Column(Integer)
     article = Column(String)
     action_type = Column(String)
     params_json = Column(String)

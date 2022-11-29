@@ -22,9 +22,9 @@ class TaskRequestVO(database.base):
 
 
 class ArticleSelectType:
-    by_article = "По артикулу"
-    by_shop = "По магазину"
-    by_search = "По поисковому запросу"
+    by_article = "Список артикулов через 'ENTER'"
+    by_shop = "Найти по магазину"
+    by_search = "Найти по поисковому запросу"
 
 
 class ActionType:

@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
+from playwright.sync_api import sync_playwright
 
 import task_request_service
 from config import database
@@ -27,3 +28,4 @@ def post_task_request():
 
 if __name__ == '__main__':
     app.run()
+
