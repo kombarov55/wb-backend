@@ -6,7 +6,7 @@ from flask_cors import CORS
 import task_request_service
 from config import database
 from config.alchemy_encoder import AlchemyEncoder
-from repository import phone_number_repository, task_request_repository
+from repository import phone_number_repository, task_request_repository, proxy_repository
 from service import sms_activate
 
 app = Flask(__name__)
@@ -53,6 +53,29 @@ def post_request_phone():
     return {
         "status": "OK"
     }
+
+
+@app.route("/available_numbers", methods=["GET"])
+def available_numbers():
+    amount = phone_number_repository.count_activated()
+    return {
+        "amount": amount
+    }
+
+
+@app.route("/proxy", methods=["GET", "POST"])
+def proxy():
+    with database.session_local() as session:
+        if request.method == "GET":
+            offset = int(request.args.get("offset"))
+            limit = int(request.args.get("limit"))
+            return json.dumps(proxy_repository.get_all(session, offset, limit), cls=AlchemyEncoder)
+        if request.method == "POST":
+            body = request.get_json()
+            proxy_repository.save(session, body)
+            return {
+                "status": "OK"
+            }
 
 
 if __name__ == '__main__':

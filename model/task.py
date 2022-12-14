@@ -22,3 +22,4 @@ class TaskStatus:
     running = "RUNNING"
     no_available_numbers = "NO_AVAILABLE_NUMBERS"
     success = "SUCCESS"
+    failed = "FAILED"

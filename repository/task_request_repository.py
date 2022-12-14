@@ -26,7 +26,7 @@ def get_all():
         where t.task_request_id = tr.id and t.status = 'RUNNING') running_cnt,
        (select count(*)
         from task t
-        where t.task_request_id = tr.id and t.status = 'NO_AVAILABLE_NUMBERS') no_available_numbers_cnt,
+        where t.task_request_id = tr.id and t.status in ('NO_AVAILABLE_NUMBERS', 'FAILED')) no_available_numbers_cnt,
        (select count(*)
         from task t
         where t.task_request_id = tr.id and t.status = 'RUNNING') running_cnt,
