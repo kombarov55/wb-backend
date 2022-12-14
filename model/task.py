@@ -19,4 +19,6 @@ class TaskVO(database.base):
 
 class TaskStatus:
     scheduled = "SCHEDULED"
+    running = "RUNNING"
+    no_available_numbers = "NO_AVAILABLE_NUMBERS"
     success = "SUCCESS"

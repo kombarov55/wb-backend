@@ -1,9 +1,13 @@
+import json
+
 from flask import Flask, request
-from flask_cors import CORS, cross_origin
-from playwright.sync_api import sync_playwright
+from flask_cors import CORS
 
 import task_request_service
 from config import database
+from config.alchemy_encoder import AlchemyEncoder
+from repository import phone_number_repository, task_request_repository
+from service import sms_activate
 
 app = Flask(__name__)
 cors = CORS(app, send_wildcard=True)
@@ -11,7 +15,7 @@ cors = CORS(app, send_wildcard=True)
 database.base.metadata.create_all(bind=database.engine)
 
 @app.route('/')
-def hello_world():  # put application's code here
+def hello_world():
     return 'Hello World!'
 
 
@@ -20,10 +24,35 @@ def post_task_request():
     if request.method == "POST":
         body = request.get_json()
         task_request_service.process(body)
-        return "ХОрошо"
-    if request.method == "GET":
-        print("GET")
         return "OK"
+    if request.method == "GET":
+        return task_request_repository.get_all()
+
+
+
+@app.route("/phones")
+def get_phones():
+    with database.session_local() as session:
+        return json.dumps(phone_number_repository.get_all(session), cls=AlchemyEncoder)
+
+
+@app.route("/phones_data")
+def get_phones_data():
+    balance = sms_activate.get_balance()
+    return {
+        "balance": balance
+    }
+
+
+@app.route("/request_phone", methods=["POST"])
+def post_request_phone():
+    body = request.get_json()
+    amount = int(body["amount"])
+    for i in range(0, amount):
+        sms_activate.get_new_number()
+    return {
+        "status": "OK"
+    }
 
 
 if __name__ == '__main__':
