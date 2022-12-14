@@ -6,7 +6,7 @@ from flask_cors import CORS
 import task_request_service
 from config import database
 from config.alchemy_encoder import AlchemyEncoder
-from repository import phone_number_repository, task_request_repository, proxy_repository
+from repository import phone_number_repository, task_request_repository, proxy_repository, task_repository
 from service import sms_activate
 
 app = Flask(__name__)
@@ -28,6 +28,11 @@ def post_task_request():
     if request.method == "GET":
         return task_request_repository.get_all()
 
+
+@app.route("/task_request/tasks")
+def tasks():
+    id = int(request.args.get("id"))
+    return task_repository.find_by_task_request_id(id)
 
 
 @app.route("/phones")
