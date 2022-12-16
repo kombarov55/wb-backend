@@ -35,13 +35,13 @@ def process(body):
 
     session.close()
 
-def save_task_request(session: Session, task_request: TaskRequestVO) -> TaskRequestVO:
+def save_task_request(session: Session, task_request: TaskRequestVO):
     session.add(task_request)
     session.commit()
     return task_request
 
 
-def find_articles(article_select_type: str, article_select_value: str) -> list[str]:
+def find_articles(article_select_type: str, article_select_value: str):
     if article_select_type == ArticleSelectType.by_article:
         return article_select_value.split("\n")
     if article_select_type == ArticleSelectType.by_shop:
@@ -50,7 +50,7 @@ def find_articles(article_select_type: str, article_select_value: str) -> list[s
         return wb_service.find_all_articles_by_search_query(article_select_value)
 
 
-def schedule_tasks(article: str, task_request: TaskRequestVO) -> list[TaskVO]:
+def schedule_tasks(article: str, task_request: TaskRequestVO):
     result = []
     now = datetime.now()
 
@@ -73,7 +73,7 @@ def schedule_tasks(article: str, task_request: TaskRequestVO) -> list[TaskVO]:
     return result
 
 
-def to_vo(body: dict) -> TaskRequestVO:
+def to_vo(body: dict):
     return TaskRequestVO(
         article_select_type=body["article_select_type"],
         article_select_value=body["article_select_value"],
