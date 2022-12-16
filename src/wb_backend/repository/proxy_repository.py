@@ -2,7 +2,8 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session
 
-from model.proxy import ProxyVO
+from src.wb_backend.config import database
+from src.wb_backend.model.proxy import ProxyVO
 
 
 def get_all(session: Session, offset: int, limit: int):
@@ -21,3 +22,8 @@ def save(session: Session, x: dict):
     session.commit()
     session.refresh(vo)
     return vo
+
+
+def delete(id: int):
+    with database.engine.connect() as con:
+        con.execute("delete from proxy where id={}".format("id"))

@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from config import app_config
+from src.wb_backend.config import app_config
 
 DATABASE_URL = "sqlite:///{}".format(app_config.db_path)
 # DATABASE_URL = "postgresql://nr:nr@localhost:5432/wbv"

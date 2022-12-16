@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime
 
-from config import database
+from src.wb_backend.config import database
 
 
 class TaskRequestVO(database.base):

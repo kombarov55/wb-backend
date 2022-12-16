@@ -68,7 +68,7 @@ def available_numbers():
     }
 
 
-@app.route("/proxy", methods=["GET", "POST"])
+@app.route("/proxy", methods=["GET", "POST", "DELETE"])
 def proxy():
     with database.session_local() as session:
         if request.method == "GET":
@@ -78,6 +78,12 @@ def proxy():
         if request.method == "POST":
             body = request.get_json()
             proxy_repository.save(session, body)
+            return {
+                "status": "OK"
+            }
+        if request.method == "DELETE":
+            id = int(request.args.get("id"))
+            proxy_repository.delete(id)
             return {
                 "status": "OK"
             }

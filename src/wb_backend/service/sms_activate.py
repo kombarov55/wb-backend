@@ -1,10 +1,8 @@
-import json
-
 from smsactivate.api import SMSActivateAPI
 
-from config import app_config, database
-from model.phone_number import PhoneNumberVO, PhoneNumberStatus
-from repository import phone_number_repository
+from src.wb_backend.config import database, app_config
+from src.wb_backend.model.phone_number import PhoneNumberVO, PhoneNumberStatus
+from src.wb_backend.repository import phone_number_repository
 
 sa = SMSActivateAPI(app_config.sms_activate_key)
 sa.debug_mode = True
