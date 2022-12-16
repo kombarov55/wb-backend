@@ -10,7 +10,6 @@ sqlalchemy = "*"
 playwright = "*"
 smsactivate = "*"
 requests = "*"
-psycopg2 = "*"
 sqlalchemy-serializer = "*"
 
 [dev-packages]
