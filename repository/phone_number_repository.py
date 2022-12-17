@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
-from src.wb_backend.config import database
-from src.wb_backend.model.phone_number import PhoneNumberVO
+from config import database
+from model.phone_number import PhoneNumberVO
 
 
 def save(session: Session, vo: PhoneNumberVO):

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 
-from src.wb_backend.config import database
+from config import database
 
 
 class PhoneNumberVO(database.base):

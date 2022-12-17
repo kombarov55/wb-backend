@@ -1,4 +1,4 @@
-from src.wb_backend.config import database
+from config import database
 
 
 def find_by_task_request_id(id: int):

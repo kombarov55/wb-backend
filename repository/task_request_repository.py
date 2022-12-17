@@ -1,4 +1,4 @@
-from src.wb_backend.config import database
+from config import database
 
 
 def get_all():

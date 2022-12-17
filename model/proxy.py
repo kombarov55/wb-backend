@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime
 
-from src.wb_backend.config import database
+from config import database
 
 
 class ProxyVO(database.base):

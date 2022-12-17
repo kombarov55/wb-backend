@@ -2,8 +2,8 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session
 
-from src.wb_backend.config import database
-from src.wb_backend.model.proxy import ProxyVO
+from config import database
+from model.proxy import ProxyVO
 
 
 def get_all(session: Session, offset: int, limit: int):
