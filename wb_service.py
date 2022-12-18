@@ -4,7 +4,7 @@ from playwright.sync_api import sync_playwright
 def find_all_artcies_by_shop_id(shop_id: str):
     with sync_playwright() as p:
         result = []
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         page = browser.new_page()
         page.goto("https://www.wildberries.ru/brands/{}".format(shop_id))
         page.wait_for_selector("div.product-card-list")
