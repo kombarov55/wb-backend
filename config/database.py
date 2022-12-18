@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from config import app_config
 
 # DATABASE_URL = "sqlite:///{}".format(app_config.db_path)
-DATABASE_URL = "postgresql://nr:nr@localhost:5432/wbv"
+DATABASE_URL = "postgresql://wbv:wbv@localhost:5432/wbv"
 
 engine = create_engine(
     DATABASE_URL
