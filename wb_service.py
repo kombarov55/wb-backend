@@ -37,9 +37,9 @@ def find_items_by_shop_id(shop_id: str):
             title = product_card.locator("span.goods-name").inner_text()
 
             result.append({
-                article: article,
-                src: src,
-                title: title
+                "article": article,
+                "src": src,
+                "title": title
             })
 
         return result
