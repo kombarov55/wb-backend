@@ -20,17 +20,25 @@ def process(body):
 
     articles = find_articles(task_request.article_select_type, task_request.article_select_value)
 
-
-
-    for article in articles:
-        if task_request.action_type == ActionType.add_to_cart_and_remove:
-            tasks = schedule_add_and_remove_from_cart(task_request, article)
-        elif task_request.action_type == ActionType.add_to_favorites_and_remove:
-            tasks = schedule_add_and_remove_from_favorites(task_request, article)
-        else:
-            tasks = schedule_tasks(article, task_request)
+    if task_request.action_type == ActionType.add_to_cart \
+            or task_request.action_type == ActionType.add_to_favorites:
+        for i in range(0, len(articles)):
+            article = articles[i]
+            task = create_task(task_request, article, i)
+            session.add(task)
+    elif task_request.action_type == ActionType.add_to_cart_and_remove:
+        tasks = schedule_add_and_remove_from_cart(task_request, articles)
         for task in tasks:
             session.add(task)
+    elif task_request.action_type == ActionType.add_to_favorites_and_remove:
+        tasks = schedule_add_and_remove_from_favorites(task_request, articles)
+        for task in tasks:
+            session.add(task)
+    else:
+        for article in articles:
+            tasks = schedule_tasks(article, task_request)
+            for task in tasks:
+                session.add(task)
 
     session.commit()
     session.close()
@@ -104,53 +112,55 @@ def default_schedule(task_request: TaskRequestVO, article: str):
     return result
 
 
-def schedule_add_and_remove_from_cart(task_request: TaskRequestVO, article: str):
+def schedule_add_and_remove_from_cart(task_request: TaskRequestVO, articles: list):
     result = []
-    now = datetime.now()
 
-    for i in range(0, task_request.amount):
-        task_add = create_task(task_request, article, i)
-        task_add.action_type = ActionType.add_to_cart
-        result.append(task_add)
+    for article_i in range(0, len(articles)):
+        article = articles[article_i]
+        for rq_amount_i in range(0, task_request.amount):
+            task_add = create_task(task_request, article, article_i + rq_amount_i)
+            task_add.action_type = ActionType.add_to_cart
+            result.append(task_add)
 
-        task_remove = create_task(task_request, article, i)
-        task_remove.action_type = ActionType.remove_from_cart
+            task_remove = create_task(task_request, article, rq_amount_i)
+            task_remove.action_type = ActionType.remove_from_cart
 
-        params = json.loads(task_request.params_json)
+            params = json.loads(task_request.params_json)
 
-        task_remove.scheduled_datetime = now + timedelta(
-            days=int(params["remove_interval_days"]),
-            hours=int(params["remove_interval_hours"]),
-            minutes=int(params["remove_interval_minutes"]),
-            seconds=int(params["remove_interval_seconds"])
-        )
-        result.append(task_remove)
+            task_remove.scheduled_datetime = task_add.scheduled_datetime + timedelta(
+                days=int(params["remove_interval_days"]),
+                hours=int(params["remove_interval_hours"]),
+                minutes=int(params["remove_interval_minutes"]),
+                seconds=int(params["remove_interval_seconds"])
+            )
+            result.append(task_remove)
 
     return result
 
 
-def schedule_add_and_remove_from_favorites(task_request: TaskRequestVO, article: str):
+def schedule_add_and_remove_from_favorites(task_request: TaskRequestVO, articles: list):
     result = []
-    now = datetime.now()
 
-    for i in range(0, task_request.amount):
-        task_add = create_task(task_request, article, i)
-        task_add.action_type = ActionType.add_to_favorites
+    for article_i in range(0, len(articles)):
+        article = articles[article_i]
+        for rq_i in range(0, task_request.amount):
+            task_add = create_task(task_request, article, article_i + rq_i)
+            task_add.action_type = ActionType.add_to_favorites
 
-        result.append(task_add)
+            result.append(task_add)
 
-        task_remove = create_task(task_request, article, i)
-        task_remove.action_type = ActionType.remove_from_favorites
+            task_remove = create_task(task_request, article, rq_i)
+            task_remove.action_type = ActionType.remove_from_favorites
 
-        params = json.loads(task_request.params_json)
+            params = json.loads(task_request.params_json)
 
-        task_remove.scheduled_datetime = now + timedelta(
-            days=int(params["remove_interval_days"]),
-            hours=int(params["remove_interval_hours"]),
-            minutes=int(params["remove_interval_minutes"]),
-            seconds=int(params["remove_interval_seconds"])
-        )
-        result.append(task_remove)
+            task_remove.scheduled_datetime = task_add.scheduled_datetime + timedelta(
+                days=int(params["remove_interval_days"]),
+                hours=int(params["remove_interval_hours"]),
+                minutes=int(params["remove_interval_minutes"]),
+                seconds=int(params["remove_interval_seconds"])
+            )
+            result.append(task_remove)
 
     return result
 

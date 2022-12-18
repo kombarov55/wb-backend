@@ -61,8 +61,7 @@ def find_items_by_search_query(q: str):
         page.wait_for_selector("div.img-plug")
         page.locator("input#searchInput").type(q)
         page.keyboard.press("Enter")
-
-        time.sleep(1)
+        time.sleep(3)
 
         if "brands" in page.url:
             return parse_items_from_brand(page)

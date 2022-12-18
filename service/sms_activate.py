@@ -5,7 +5,6 @@ from model.phone_number import PhoneNumberVO, PhoneNumberStatus
 from repository import phone_number_repository
 
 sa = SMSActivateAPI(app_config.sms_activate_key)
-sa.debug_mode = True
 
 def get_new_number():
     print("get new number")
@@ -30,7 +29,6 @@ def get_new_number():
 
 def get_balance():
     rs = sa.getBalance()
-    print(rs)
     return rs["balance"]
 
 
