@@ -23,7 +23,7 @@ def hello_world():
 @app.route("/articles/by_shop")
 def get_articles():
     shop_id = request.args.get("shop_id")
-    return wb_service.find_all_artcies_by_shop_id(shop_id)
+    return wb_service.find_items_by_shop_id(shop_id)
 
 
 @app.route("/task_request", methods=["GET", "POST"])

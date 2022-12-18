@@ -1,10 +1,12 @@
 from playwright.sync_api import sync_playwright
 
+from config import app_config
+
 
 def find_all_artcies_by_shop_id(shop_id: str):
     with sync_playwright() as p:
         result = []
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=app_config.headless)
         page = browser.new_page()
         page.goto("https://www.wildberries.ru/brands/{}".format(shop_id))
         page.wait_for_selector("div.product-card-list")
@@ -16,11 +18,37 @@ def find_all_artcies_by_shop_id(shop_id: str):
         return result
 
 
+def find_items_by_shop_id(shop_id: str):
+    with sync_playwright() as p:
+        result = []
+
+        browser = p.chromium.launch(headless=app_config.headless)
+        page = browser.new_page()
+
+        page.goto("https://www.wildberries.ru/brands/{}".format(shop_id))
+        page.wait_for_selector("div.product-card-list")
+
+        product_cards = page.locator("div.product-card")
+        for i in range(0, product_cards.count()):
+            product_card = product_cards.nth(i)
+
+            article = product_card.locator("a.j-card-link").get_attribute("href").split("/")[4]
+            src = product_card.locator("img.thumbnail").get_attribute("src")
+            title = product_card.locator("span.goods-name").inner_text()
+
+            result.append({
+                article: article,
+                src: src,
+                title: title
+            })
+
+        return result
+
 def find_all_articles_by_search_query(q: str):
     with sync_playwright() as p:
         result = []
 
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=app_config.headless)
         page = browser.new_page()
 
         page.goto("https://wb.ru")
