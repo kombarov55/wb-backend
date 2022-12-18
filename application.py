@@ -4,6 +4,7 @@ from flask import Flask, request
 from flask_cors import CORS
 
 import task_request_service
+import wb_service
 from config import database
 from config.alchemy_encoder import AlchemyEncoder
 from repository import phone_number_repository, task_request_repository, proxy_repository, task_repository
@@ -17,6 +18,12 @@ database.base.metadata.create_all(bind=database.engine)
 @app.route('/')
 def hello_world():
     return 'Hello Worldente!'
+
+
+@app.route("/articles/by_shop")
+def get_articles():
+    shop_id = request.args.get("shop_id")
+    return wb_service.find_all_artcies_by_shop_id(shop_id)
 
 
 @app.route("/task_request", methods=["GET", "POST"])
