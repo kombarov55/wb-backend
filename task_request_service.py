@@ -31,13 +31,13 @@ def process(body):
             tasks = schedule_tasks(article, task_request)
         for task in tasks:
             session.add(task)
-        session.commit()
 
+    session.commit()
     session.close()
+
 
 def save_task_request(session: Session, task_request: TaskRequestVO):
     session.add(task_request)
-    session.commit()
     return task_request
 
 
