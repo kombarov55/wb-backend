@@ -20,7 +20,7 @@ def find_all_articles_by_search_query(q: str):
     with sync_playwright() as p:
         result = []
 
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         page = browser.new_page()
 
         page.goto("https://wb.ru")
