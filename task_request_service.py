@@ -38,6 +38,8 @@ def process(body):
 
 def save_task_request(session: Session, task_request: TaskRequestVO):
     session.add(task_request)
+    session.commit()
+    session.refresh(task_request)
     return task_request
 
 
@@ -45,9 +47,11 @@ def find_articles(article_select_type: str, article_select_value: str):
     if article_select_type == ArticleSelectType.by_article:
         return article_select_value.split("\n")
     if article_select_type == ArticleSelectType.by_shop:
-        return wb_service.find_all_artcies_by_shop_id(article_select_value)
+        xs = wb_service.find_items_by_shop_id(article_select_value)
+        return list(map(lambda x: x["article"], xs))
     if article_select_type == ArticleSelectType.by_search:
-        return wb_service.find_all_articles_by_search_query(article_select_value)
+        xs = wb_service.find_items_by_search_query(article_select_value)
+        return list(map(lambda x: x["article"], xs))
 
 
 def schedule_tasks(article: str, task_request: TaskRequestVO):
