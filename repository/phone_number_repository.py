@@ -25,3 +25,4 @@ def count_activated():
             return None
         else:
             return result[0]
+

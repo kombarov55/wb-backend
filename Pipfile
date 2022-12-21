@@ -12,6 +12,8 @@ smsactivate = "*"
 requests = "*"
 sqlalchemy-serializer = "*"
 psycopg2 = "*"
+bs4 = "*"
+six = "*"
 
 [dev-packages]
 
