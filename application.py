@@ -50,15 +50,18 @@ def tasks():
 
 @app.route("/phones")
 def get_phones():
-    with database.session_local() as session:
-        return json.dumps(phone_number_repository.get_all(session), cls=AlchemyEncoder)
+    return phone_number_repository.get_all()
 
 
 @app.route("/phones_data")
 def get_phones_data():
     balance = sms_activate.get_balance()
+    rs = phone_number_repository.count_info()
     return {
-        "balance": balance
+        "balance": balance,
+        "activated_count": rs["activated"],
+        "just_received_count": rs["just_received"],
+        "activating_count": rs["activating"]
     }
 
 

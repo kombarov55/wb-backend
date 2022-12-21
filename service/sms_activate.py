@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from smsactivate.api import SMSActivateAPI
 
 from config import database, app_config
@@ -17,7 +19,9 @@ def get_new_number():
     vo = PhoneNumberVO(
         ext_id=rs["activation_id"],
         number=rs["phone"],
-        status=PhoneNumberStatus.just_received
+        status=PhoneNumberStatus.just_received,
+        received_datetime=datetime.now(),
+        status_change_datetime=datetime.now()
     )
 
     phone_number_repository.save(session, vo)
