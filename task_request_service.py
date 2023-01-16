@@ -1,4 +1,5 @@
 import json
+import random
 from datetime import datetime, timedelta
 
 from sqlalchemy.orm import Session
@@ -64,7 +65,6 @@ def find_articles(article_select_type: str, article_select_value: str):
 
 def schedule_tasks(article: str, task_request: TaskRequestVO):
     result = []
-    now = datetime.now()
 
     for i in range(0, task_request.amount):
         task = TaskVO(
@@ -72,12 +72,7 @@ def schedule_tasks(article: str, task_request: TaskRequestVO):
             article=article,
             action_type=task_request.action_type,
             params_json=task_request.params_json,
-            scheduled_datetime=now + timedelta(
-                days=task_request.interval_days * i,
-                hours=task_request.interval_hours * i,
-                minutes=task_request.interval_minutes * i,
-                seconds=task_request.interval_seconds * i
-            ),
+            scheduled_datetime=get_random_datetime_in_interval(task_request),
             status=TaskStatus.scheduled
         )
         result.append(task)
@@ -173,11 +168,17 @@ def create_task(task_request: TaskRequestVO, article: str, i):
         article=article,
         action_type=task_request.action_type,
         params_json=task_request.params_json,
-        scheduled_datetime=now + timedelta(
-            days=task_request.interval_days * i,
-            hours=task_request.interval_hours * i,
-            minutes=task_request.interval_minutes * i,
-            seconds=task_request.interval_seconds * i
-        ),
+        scheduled_datetime=get_random_datetime_in_interval(task_request),
         status=TaskStatus.scheduled
     )
+
+
+def get_random_datetime_in_interval(task_request: TaskRequestVO):
+    now = datetime.now()
+    interval_seconds = task_request.interval_days * 60 * 60 * 24 \
+                       + task_request.interval_hours * 60 * 60 \
+                       + task_request.interval_minutes * 60 \
+                       + task_request.interval_seconds
+
+    seconds_to_add = random.randint(0, interval_seconds)
+    return now + timedelta(seconds=seconds_to_add)
