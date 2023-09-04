@@ -8,7 +8,7 @@ class PhoneNumberVO(database.base):
 
     id = Column(Integer, primary_key=True, index=True)
     ext_id = Column(String)
-    number = Column(String)
+    number = Column(String) 
     cookies_json = Column(String)
     status = Column(String, index=True)
     received_datetime = Column(DateTime, index=True)

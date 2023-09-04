@@ -8,6 +8,7 @@ from repository import phone_number_repository
 
 sa = SMSActivateAPI(app_config.sms_activate_key)
 
+
 def get_new_number():
     print("get new number")
 
@@ -39,3 +40,5 @@ def get_balance():
 def get_prices():
     rs = sa.getPrices(service="uu", country=0)
     return rs["0"]["uu"]["cost"]
+
+
