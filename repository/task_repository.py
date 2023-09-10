@@ -9,6 +9,7 @@ def find_by_task_request_id(id: int):
     scheduled_datetime, 
     end_datetime, 
     number_used, 
+    error_msg,
     status
     from task
     where task_request_id = {} 
