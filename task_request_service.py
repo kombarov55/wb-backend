@@ -41,6 +41,9 @@ def process(body):
             for task in tasks:
                 session.add(task)
 
+    task_request.status = TaskRequestStatus.started
+    save_task_request(session, task_request)
+
     session.commit()
     session.close()
 
