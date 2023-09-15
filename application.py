@@ -10,7 +10,7 @@ from config.alchemy_encoder import AlchemyEncoder
 from repository import phone_number_repository, task_request_repository, proxy_repository, task_repository
 from service import sms_activate
 
-app = Flask(__name__, static_url_path="/static", static_folder="/home/nikolay/Documents/static")
+app = Flask(__name__, static_url_path="/static", static_folder="/tmp/static")
 cors = CORS(app, send_wildcard=True)
 
 database.base.metadata.create_all(bind=database.engine)
