@@ -15,6 +15,7 @@ cors = CORS(app, send_wildcard=True)
 
 database.base.metadata.create_all(bind=database.engine)
 
+
 @app.route('/')
 def hello_world():
     return 'Hello Worldente!'
